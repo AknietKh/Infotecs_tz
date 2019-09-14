@@ -1,0 +1,76 @@
+*{
+  margin: 0;
+  padding: 0;
+}
+
+body{
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  
+}
+
+.table{  
+  width:50%;
+  margin-top: 20px;
+  border: 3px solid black;
+  border-collapse: collapse;
+}
+
+th{
+  cursor: pointer;
+}
+
+.first-name,
+.last-name,
+.eye-color{
+  width: 15%;
+}
+
+.colored-eye{
+  margin: 0 5px;
+  padding: 10px 0;
+}
+
+._cell{
+  text-align: center;
+  border: 3px solid black;
+  padding: 10px 0px;
+}
+
+.main-data{
+  border-color: lightslategray;
+}
+
+th.selected[data-order="1"],
+th.selected[data-order="-1"] {
+    position: relative;
+}
+
+th.selected[data-order="1"]::after,
+th.selected[data-order="-1"]::after {
+    position: absolute;
+}
+
+th.selected[data-order="-1"]::after {
+	content: "▼"
+}
+
+th.selected[data-order="1"]::after {
+	content: "▲"
+}
+
+.form-wrapper{
+  border: 1px solid black;
+  position: absolute;
+  padding: 10px;
+  display: none;
+}
+
+.form p{
+  margin: 10px;
+}
+
+.form input {
+  float: right;
+}
