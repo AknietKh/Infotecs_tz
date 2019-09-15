@@ -19,6 +19,7 @@ body{
 
 th{
   cursor: pointer;
+  position: relative;
 }
 
 .first-name,
@@ -73,4 +74,20 @@ th.selected[data-order="1"]::after {
 
 .form input {
   float: right;
+}
+
+.hidden-column{
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  bottom: 0;
+  right: 0;
+}
+
+.hidden-off{
+  content: url(/img/view-30.png);
+}
+
+.hidden-on{
+  content: url(/img/hidden-30.png);
 }
