@@ -143,7 +143,13 @@ function editData() {
 
     CHANGE_ROW.cells[0].innerHTML = inputs[0].value;
     CHANGE_ROW.cells[1].innerHTML = inputs[1].value;
-    CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutThLength / 4)) + '...';
+    //Если строка about влезет в ячейку about в 2 строчки, то вставляем без изменения. Иначе обрезаем и добавляем "..."
+    if (textarea.value.length <= aboutThLength / 4) {
+      CHANGE_ROW.cells[2].innerHTML = textarea.value;
+    } else {
+      CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutThLength / 4)) + '...';
+    }
+
     CHANGE_ROW.cells[3].innerHTML = inputs[2].value;
     eyeColor(CHANGE_ROW.cells[3]);
     editForm.style='';
