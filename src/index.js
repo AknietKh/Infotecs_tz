@@ -1,4 +1,6 @@
-//получение данных из json
+(function(){
+  
+  //получение данных из json
 
 function getData() {
   return fetch('./db/db.json')
@@ -93,7 +95,7 @@ function sortTable(index, order) {
 
 //end сортировка
 
-//Костыль(?). Форма редактирования
+//Форма редактирования
 
 function editData() {
   const table = document.querySelector('table'); 
@@ -130,7 +132,7 @@ function editData() {
 
     inputs[0].value = row.cells[0].innerHTML;
     inputs[1].value = row.cells[1].innerHTML;
-    textarea.value = row.cells[2].innerHTML;
+    textarea.value = row.cells[2].innerHTML.slice(0, row.cells[2].innerHTML.length - 3);
     inputs[2].value = row.cells[3].firstChild.innerHTML;
    
   });
@@ -144,7 +146,7 @@ function editData() {
     CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutThLength / 4)) + '...';
     CHANGE_ROW.cells[3].innerHTML = inputs[2].value;
     eyeColor(CHANGE_ROW.cells[3]);
-    
+    editForm.style='';
   });
 
   btnClose.addEventListener('click', () => editForm.style=''); // закрывает форму редактирования.
@@ -172,3 +174,4 @@ getData().then((data) => {
   eventSortTable();
   editData();
 });
+})()
