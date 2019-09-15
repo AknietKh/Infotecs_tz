@@ -190,7 +190,7 @@ function hiddenAllColumn() {
       tableData.style.display = 'none';
     } else if(tableData.dataset.hidden == 'on') {
       tableData.setAttribute('data-hidden', 'off');
-      btnHidden.innerHTML = 'Скрыть';
+      btnHidden.innerHTML = 'Скрыть все колонки';
       tableData.style.display = '';
     }
   });
@@ -206,12 +206,12 @@ function hiddenColumn() {
 
   hiddenBtns.forEach((item, i) => {
     item.addEventListener('click', () => {
-      //проверка чему равен data-hidden у span внутри кнопки
+      //проверка чему равен data-hidden у span внутри кнопки, которая содержит в себе иконку "показать/скрыть"
       if(item.children[0].dataset.hidden === 'off') {
-        item.children[0].setAttribute('data-hidden', 'on');
+        item.children[0].setAttribute('data-hidden', 'on'); //заменяет иконку "показать" на иконку "скрыть"
         table.classList.add(`hidden-${i+1}`);
       } else if(item.children[0].dataset.hidden === 'on') {
-        item.children[0].setAttribute('data-hidden', 'off');
+        item.children[0].setAttribute('data-hidden', 'off'); //заменяет иконку "скрыть" на иконку "показать"
         table.classList.remove(`hidden-${i+1}`);
       }
 
