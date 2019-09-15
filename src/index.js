@@ -55,9 +55,9 @@ function eventSortTable() {
     th.addEventListener('click', () => {
       checkSelectedTh(i);
       console.dir(th);
-        if (!th.dataset.order || th.dataset.order == -1) {
+        if (!th.dataset.order || th.dataset.order === -1) {
           th.setAttribute('data-order', 1);
-        } else if (th.dataset.order == 1 ) {
+        } else if (th.dataset.order === 1 ) {
           th.setAttribute('data-order', -1);
         }
 
@@ -70,7 +70,7 @@ function eventSortTable() {
   //функция checkSelectedTh(index) убирает класс selected и data-атрибут у неактивных заголовочных ячеек таблицы
   function checkSelectedTh(index) {
     tableThs.forEach((th, i) => {
-      if(th.classList.contains('selected') && i != index) {
+      if(th.classList.contains('selected') && i !== index) {
         th.classList.toggle('selected');
         th.removeAttribute('data-order');
       }
@@ -102,17 +102,21 @@ function editData() {
   const textarea = editForm.querySelector('textarea');
   const btnEdit = editForm.querySelector('.btn-edit'); 
   const btnClose = editForm.querySelector('.btn-close');
+  const aboutTh = document.querySelector('.about');
+  const aboutLength = aboutTh.clientWidth;
+  let CHANGE_ROW;
 
   //Используется делегирование событий. При клике на таблицу получает строку по которой кликнули и отображает рядом с ней форму редактирования
 
   table.addEventListener('click', function(event) {
     let row = event.target.closest('.data-row'); //возвращает ближайщего предка соответсвуещьго селектору.
-    
+    CHANGE_ROW = row;
+
     if (!row) return; //Если event.target не содержится внутри элемента row, то вызов вернёт null, и ничего не произойдёт.
     if (!table.contains(row)) return; //проверка, прендалежит ли row нашей таблице.
 
-    editForm.style.cssText = `display: block;  top: ${row.offsetTop}px; left: ${row.offsetWidth + 50}px;`;
-    inputs.forEach((input, i) => {    
+    editForm.style.cssText = `display: block;  top: ${row.offsetTop}px; left: ${row.offsetWidth + 20}px;`;
+    /*inputs.forEach((input, i) => {    
       if (row.cells[i].classList.contains('about')) i++;
       if(row.cells[i].classList.contains('eye-color')){
         input.value = row.cells[i].firstChild.innerHTML;
@@ -120,26 +124,42 @@ function editData() {
         input.value = row.cells[i].innerHTML;
       }
     })
+    textarea.value = row.cells[2].innerHTML;*/ //мало input-ов в форме ракдтирования, лучше без цикла обойтись
+
+    inputs[0].value = row.cells[0].innerHTML;
+    inputs[1].value = row.cells[1].innerHTML;
     textarea.value = row.cells[2].innerHTML;
 
-    //При нажатии на кнопку редактирования btnEdit содержимое ячеек строкы заменяется на содержимое формы
-    btnEdit.addEventListener('click', () => {
-      console.log(row.cells);
-      Array.from(row.cells).forEach((td, i) => {
-        if (td.classList.contains('about')) {
-          td.innerHTML = textarea.value;
-        } else if (td.classList.contains('eye-color')){
-          td.innerHTML = inputs[i-1].value;
-          eyeColor(td);
-        } else {
-          td.innerHTML = inputs[i].value;
-        }
-        editForm.style='';
-      });
-    });
-
-    btnClose.addEventListener('click', () => editForm.style=''); // закрывает форму редактирования.
+    // inputs[2].type = 'color'; console.dir(inputs[2]);
+    inputs[2].value = row.cells[3].firstChild.innerHTML;
+   
   });
+
+  
+  //При нажатии на кнопку редактирования btnEdit содержимое ячеек строкы заменяется на содержимое формы
+  btnEdit.addEventListener('click', () => {
+
+    /*Array.from(row.cells).forEach((td, i) => {
+      if (td.classList.contains('about')) {
+        td.innerHTML = textarea.value;
+      } else if (td.classList.contains('eye-color')){
+        td.innerHTML = inputs[i-1].value;
+        eyeColor(td);
+      } else {
+        td.innerHTML = inputs[i].value;
+      }
+      editForm.style='';
+    });*/
+
+    CHANGE_ROW.cells[0].innerHTML = inputs[0].value;
+    CHANGE_ROW.cells[1].innerHTML = inputs[1].value;
+    CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutLength / 4)) + '...';
+    CHANGE_ROW.cells[3].innerHTML = inputs[2].value;
+    eyeColor(CHANGE_ROW.cells[3]);
+    
+  });
+
+  btnClose.addEventListener('click', () => editForm.style=''); // закрывает форму редактирования.
 }
 
 //end Форма редактирования
@@ -162,5 +182,5 @@ function eyeColor(value) {
 getData().then((data) => {
   renderCell(data);
   eventSortTable();
-  editData()
+  editData();
 });
