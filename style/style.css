@@ -23,6 +23,7 @@ th{
 .colored-eye{
   margin: 0 5px;
   padding: 20px 0;
+  font-size: 0px;
 }
 
 ._cell{

@@ -31,6 +31,8 @@ function renderCell(data) {
   const aboutTh = document.querySelector('.about');
   const aboutThLength = aboutTh.clientWidth;
 
+  tableData.innerHTML = '';
+
   data.JSON.forEach((element) => {
     const rowTable = document.createElement('tr');
     rowTable.className = 'data-row';
@@ -107,6 +109,7 @@ function editData() {
   const btnClose = editForm.querySelector('.btn-close');
   const aboutTh = document.querySelector('.about');
   const aboutThLength = aboutTh.clientWidth;
+  const aboutLength = aboutThLength / 4;
   let CHANGE_ROW; // строка tr которую нужно будет редактировать
 
   //Используется делегирование событий. При клике на таблицу получает строку по которой кликнули и отображает рядом с ней форму редактирования
@@ -142,13 +145,14 @@ function editData() {
   //При нажатии на кнопку редактирования btnEdit содержимое ячеек строкы заменяется на содержимое формы
   btnEdit.addEventListener('click', () => {
 
+
     CHANGE_ROW.cells[0].innerHTML = inputs[0].value;
     CHANGE_ROW.cells[1].innerHTML = inputs[1].value;
     //Если строка about влезет в ячейку about в 2 строчки, то вставляем без изменения. Иначе обрезаем и добавляем "..."
-    if (textarea.value.length <= aboutThLength / 4) {
+    if (textarea.value.length <= aboutLength) {
       CHANGE_ROW.cells[2].innerHTML = textarea.value;
     } else {
-      CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutThLength / 4)) + '...';
+      CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, aboutLength) + '...';
     }
 
     CHANGE_ROW.cells[3].innerHTML = inputs[2].value;
@@ -169,7 +173,7 @@ function eyeColor(value) {
   coloredEye.innerHTML = value.innerHTML;
   value.innerHTML = '';
   value.append(coloredEye);
-  value.firstChild.style.cssText = `background-color: ${value.firstChild.innerHTML}; font-size: 0px`;
+  value.firstChild.style.cssText = `background-color: ${value.firstChild.innerHTML};`;
 }
 
 //end функция замены значения eyeColor на цвет
@@ -194,6 +198,13 @@ function hiddenColumn() {
 }
 
 //end функция показывает или прячет содержимое колонки
+
+//Перерисовывает таблицу при изменении размера окна
+window.addEventListener('resize', () => {
+  getData().then((data) => {
+    renderCell(data);
+  });
+})
 
 //Сначала выполнится функция получения данных, затем все остальные
 getData().then((data) => {
