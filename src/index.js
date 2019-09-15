@@ -23,7 +23,8 @@ function getData() {
 //end получение данных из json
 
 //прорисовка таблицы. Создает строку таблицы с ячейками данных и добавляет их в tbody.
-//При прорисовке данных в колонке "Описание" обрезает about до длины th "Описание" (aboutLength ) деленное на 4
+//При прорисовке данных в колонке "Описание" обрезает about до длины th "Описание" (aboutLength ) деленное на 4.
+//aboutThLength / 4 примерно равно кол-ву символов, которые влезут 2-мя строками в ячейку about
 
 function renderCell(data) {
   const tableData = document.querySelector('.main-data');
