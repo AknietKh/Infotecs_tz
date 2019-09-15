@@ -3,13 +3,6 @@
   padding: 0;
 }
 
-body{
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  
-}
-
 .table{  
   width:50%;
   margin-top: 20px;
@@ -19,7 +12,6 @@ body{
 
 th{
   cursor: pointer;
-  position: relative;
 }
 
 .first-name,
@@ -76,18 +68,7 @@ th.selected[data-order="1"]::after {
   float: right;
 }
 
-.hidden-column{
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-}
-
-.hidden-off{
-  content: url(/img/view-30.png);
-}
-
-.hidden-on{
-  content: url(/img/hidden-30.png);
+.btn-hidden{
+  margin: 10px 5px;
+  padding: 5px 10px; 
 }
