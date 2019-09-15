@@ -59,7 +59,6 @@ function eventSortTable() {
   tableThs.forEach((th, i) => {
     th.addEventListener('click', () => {
       checkSelectedTh(i);
-      console.dir(th);
         if (!th.dataset.order || th.dataset.order === '-1') {
           th.setAttribute('data-order', 1);
         } else if (th.dataset.order === '1' ) {
@@ -178,10 +177,10 @@ function eyeColor(value) {
 
 //end функция замены значения eyeColor на цвет
 
-//функция показывает или прячет содержимое колонок
+//функция показывает или прячет содержимое всех колонок
 
-function hiddenColumn() {
-  const btnHidden = document.querySelector('.btn-hidden');
+function hiddenAllColumn() {
+  const btnHidden = document.querySelector('.btn-hidden_all');
   const tableData = document.querySelector('.main-data');
 
   btnHidden.addEventListener('click', () => {
@@ -197,7 +196,35 @@ function hiddenColumn() {
   });
 }
 
-//end функция показывает или прячет содержимое колонки
+//end функция показывает или прячет содержимое всех колонок
+
+//Скрытитие выбранной колонки
+
+function hiddenColumn() {
+  const hiddenBtns = document.querySelectorAll('.btn-hidden');
+  const table = document.querySelector('.table');
+
+  hiddenBtns.forEach((item, i) => {
+    item.addEventListener('click', () => {
+      //проверка чему равен data-hidden у span внутри кнопки
+      if(item.children[0].dataset.hidden === 'off') {
+        item.children[0].setAttribute('data-hidden', 'on');
+        table.classList.add(`hidden-${i+1}`);
+      } else if(item.children[0].dataset.hidden === 'on') {
+        item.children[0].setAttribute('data-hidden', 'off');
+        table.classList.remove(`hidden-${i+1}`);
+      }
+
+      //перерисовывает таблицу при скрытии колонки
+      getData().then((data) => {
+        renderCell(data);
+      });
+    })
+  })
+}
+
+//end скрытие выбранной колонки
+
 
 //Перерисовывает таблицу при изменении размера окна
 window.addEventListener('resize', () => {
@@ -211,6 +238,7 @@ getData().then((data) => {
   renderCell(data);
   eventSortTable();
   editData();
+  hiddenAllColumn();
   hiddenColumn();
 });
 })()
