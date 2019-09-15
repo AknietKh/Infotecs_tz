@@ -26,7 +26,7 @@ function getData() {
 function renderCell(data) {
   const tableData = document.querySelector('.main-data');
   const aboutTh = document.querySelector('.about');
-  const aboutLength = aboutTh.clientWidth;
+  const aboutThLength = aboutTh.clientWidth;
 
   data.JSON.forEach((element) => {
     const rowTable = document.createElement('tr');
@@ -34,7 +34,7 @@ function renderCell(data) {
     rowTable.innerHTML = `
         <td class='first-name _cell' data-type='text'>${element.name.firstName}</td>
         <td class='last-name _cell' data-type='text'>${element.name.lastName}</td>
-        <td class='about _cell' data-type='text'>${element.about.slice(0, (aboutLength / 4 )) + '...'}</td>
+        <td class='about _cell' data-type='text'>${element.about.slice(0, (aboutThLength / 4 )) + '...'}</td>
         <td class='eye-color _cell' data-type='text'>${element.eyeColor}</td>
     `;
 
@@ -55,9 +55,9 @@ function eventSortTable() {
     th.addEventListener('click', () => {
       checkSelectedTh(i);
       console.dir(th);
-        if (!th.dataset.order || th.dataset.order === -1) {
+        if (!th.dataset.order || th.dataset.order === '-1') {
           th.setAttribute('data-order', 1);
-        } else if (th.dataset.order === 1 ) {
+        } else if (th.dataset.order === '1' ) {
           th.setAttribute('data-order', -1);
         }
 
@@ -96,15 +96,15 @@ function sortTable(index, order) {
 //Костыль(?). Форма редактирования
 
 function editData() {
-  const table = document.querySelector('table');
+  const table = document.querySelector('table'); 
   const editForm = document.querySelector('.form-wrapper');
   const inputs = editForm.querySelectorAll('input');
   const textarea = editForm.querySelector('textarea');
   const btnEdit = editForm.querySelector('.btn-edit'); 
   const btnClose = editForm.querySelector('.btn-close');
   const aboutTh = document.querySelector('.about');
-  const aboutLength = aboutTh.clientWidth;
-  let CHANGE_ROW;
+  const aboutThLength = aboutTh.clientWidth;
+  let CHANGE_ROW; // строка tr которую нужно будет редактировать
 
   //Используется делегирование событий. При клике на таблицу получает строку по которой кликнули и отображает рядом с ней форму редактирования
 
@@ -124,13 +124,13 @@ function editData() {
         input.value = row.cells[i].innerHTML;
       }
     })
-    textarea.value = row.cells[2].innerHTML;*/ //мало input-ов в форме ракдтирования, лучше без цикла обойтись
+    textarea.value = row.cells[2].innerHTML;*/ 
+
+    //мало input-ов в форме радактирования, лучше без цикла обойтись
 
     inputs[0].value = row.cells[0].innerHTML;
     inputs[1].value = row.cells[1].innerHTML;
     textarea.value = row.cells[2].innerHTML;
-
-    // inputs[2].type = 'color'; console.dir(inputs[2]);
     inputs[2].value = row.cells[3].firstChild.innerHTML;
    
   });
@@ -139,21 +139,9 @@ function editData() {
   //При нажатии на кнопку редактирования btnEdit содержимое ячеек строкы заменяется на содержимое формы
   btnEdit.addEventListener('click', () => {
 
-    /*Array.from(row.cells).forEach((td, i) => {
-      if (td.classList.contains('about')) {
-        td.innerHTML = textarea.value;
-      } else if (td.classList.contains('eye-color')){
-        td.innerHTML = inputs[i-1].value;
-        eyeColor(td);
-      } else {
-        td.innerHTML = inputs[i].value;
-      }
-      editForm.style='';
-    });*/
-
     CHANGE_ROW.cells[0].innerHTML = inputs[0].value;
     CHANGE_ROW.cells[1].innerHTML = inputs[1].value;
-    CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutLength / 4)) + '...';
+    CHANGE_ROW.cells[2].innerHTML = textarea.value.slice(0, (aboutThLength / 4)) + '...';
     CHANGE_ROW.cells[3].innerHTML = inputs[2].value;
     eyeColor(CHANGE_ROW.cells[3]);
     
@@ -164,7 +152,7 @@ function editData() {
 
 //end Форма редактирования
 
-//Костыль(?). функция замена значения eyeColor на цвет. Создает внутри ячейки div с фоновым цветом и цветом текста равные цвету глаз, заданный в ячейке
+//функция замены значения eyeColor на цвет. Создает внутри ячейки div с фоновым цветом и цветом текста равные цвету глаз, заданный в ячейке
 
 function eyeColor(value) {
   let coloredEye = document.createElement('div');
@@ -172,10 +160,10 @@ function eyeColor(value) {
   coloredEye.innerHTML = value.innerHTML;
   value.innerHTML = '';
   value.append(coloredEye);
-  value.firstChild.style.cssText = `background-color: ${value.firstChild.innerHTML}; color: ${value.firstChild.innerHTML}`;
+  value.firstChild.style.cssText = `background-color: ${value.firstChild.innerHTML}; font-size: 0px`;
 }
 
-//end функция замена значения eyeColor на цвет
+//end функция замены значения eyeColor на цвет
 
 
 //Сначала выполнится функция получения данных, затем все остальные
