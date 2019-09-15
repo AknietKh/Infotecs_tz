@@ -167,11 +167,32 @@ function eyeColor(value) {
 
 //end функция замены значения eyeColor на цвет
 
+//функция показывает или прячет содержимое колонок
+
+function hiddenColumn() {
+  const btnHidden = document.querySelector('.btn-hidden');
+  const tableData = document.querySelector('.main-data');
+
+  btnHidden.addEventListener('click', () => {
+    if (!tableData.dataset.hidden || tableData.dataset.hidden === 'off') {
+      tableData.setAttribute('data-hidden', 'on');
+      btnHidden.innerHTML = 'Показать';
+      tableData.style.display = 'none';
+    } else if(tableData.dataset.hidden == 'on') {
+      tableData.setAttribute('data-hidden', 'off');
+      btnHidden.innerHTML = 'Скрыть';
+      tableData.style.display = '';
+    }
+  });
+}
+
+//end функция показывает или прячет содержимое колонки
 
 //Сначала выполнится функция получения данных, затем все остальные
 getData().then((data) => {
   renderCell(data);
   eventSortTable();
   editData();
+  hiddenColumn();
 });
 })()
