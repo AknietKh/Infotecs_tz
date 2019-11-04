@@ -26,6 +26,7 @@ function getData() {
 //При прорисовке данных в колонке "Описание" обрезает about до длины th "Описание" (aboutLength ) деленное на 4.
 //aboutThLength / 4 примерно равно кол-ву символов, которые влезут 2-мя строками в ячейку about
 
+/*СТАРАЯ РЕАЛИЗАЦИЯ БЕЗ ПОСТРАНИЧНОГО ВЫВОДА ДАННЫХ
 function renderCell(data) {
   const tableData = document.querySelector('.main-data');
   const aboutTh = document.querySelector('.about');
@@ -47,8 +48,80 @@ function renderCell(data) {
     td = rowTable.querySelector('.eye-color');
     eyeColor(td);
   });
+}*/
+function renderCell(data, pagNum = '1') {
+  const tableData = document.querySelector('.main-data');
+  const aboutTh = document.querySelector('.about');
+  const aboutThLength = aboutTh.clientWidth;
+  let count;
+  if (pagNum === '1') {
+      count = 0;
+  } else {
+      count = 10 * (pagNum - 1);
+  }
+
+  tableData.innerHTML = '';
+
+  while (count < 10 * pagNum) {
+      const rowTable = document.createElement('tr');
+      rowTable.className = 'data-row';
+      rowTable.innerHTML = `
+        <td class='first-name _cell' data-type='text'>${data.JSON[count].name.firstName}</td>
+        <td class='last-name _cell' data-type='text'>${data.JSON[count].name.lastName}</td>
+        <td class='about _cell' data-type='text'>${data.JSON[count].about.slice(0, (aboutThLength / 4 )) + '...'}</td>
+        <td class='eye-color _cell' data-type='text'>${data.JSON[count].eyeColor}</td>
+      `;
+
+      tableData.append(rowTable);
+      td = rowTable.querySelector('.eye-color');
+      eyeColor(td);
+      count++;
+  }
 }
 
+//функция отрисовывает пагинацию и вызывает функицю отрисовки таблицы с аргументами 
+//data - клонированные данные из json
+//item.textContent - страница, которую нужно отобразить
+function pagination(data) {
+  const table = document.querySelector('.table');
+  const pageCount = data.JSON.length / 10;
+  const pagination = document.createElement('div');
+  const pagText = document.createElement('span');
+  pagination.className = 'pagination';
+  pagText.textContent = 'Пагинация:';
+  pagination.append(pagText);
+
+  for (let i = 0; i < pageCount; i++) {
+      const pagNum = document.createElement('div');
+      pagNum.className = 'pagination-number';
+      pagNum.innerHTML = i + 1;
+      if (i === 0) pagNum.classList.add('current-pagination');
+      pagination.append(pagNum);
+  }
+  table.insertAdjacentElement('beforebegin', pagination);
+
+  const pagNums = pagination.querySelectorAll('.pagination-number');
+  pagNums.forEach((item, i) => {
+      item.addEventListener('click', () => {
+        console.log(i);
+        activePage(i);
+        renderCell(data, item.textContent);
+      });
+  })
+}
+
+//показывает активную страницу на пагинации
+function activePage(pagNum) {
+  const pagNums = document.querySelectorAll('.pagination-number');
+    console.log(pagNum);
+    pagNums.forEach((item, i) => {
+      if (item.classList.contains('current-pagination') && i !== pagNum) {
+        item.classList.remove('current-pagination');
+      } else if (!item.classList.contains('current-pagination') && i === pagNum) {
+        item.classList.add('current-pagination')
+      }
+    })
+  }
 //end прорисовка таблицы
 
 //Сортировка.
@@ -121,17 +194,6 @@ function editData() {
     if (!table.contains(row)) return; //проверка, прендалежит ли row нашей таблице.
 
     editForm.style.cssText = `display: block;  top: ${row.offsetTop}px; left: ${row.offsetWidth + 20}px;`;
-    /*inputs.forEach((input, i) => {    
-      if (row.cells[i].classList.contains('about')) i++;
-      if(row.cells[i].classList.contains('eye-color')){
-        input.value = row.cells[i].firstChild.innerHTML;
-      } else {
-        input.value = row.cells[i].innerHTML;
-      }
-    })
-    textarea.value = row.cells[2].innerHTML;*/ 
-
-    //мало input-ов в форме радактирования, лучше без цикла обойтись
 
     inputs[0].value = row.cells[0].innerHTML;
     inputs[1].value = row.cells[1].innerHTML;
@@ -143,7 +205,6 @@ function editData() {
   
   //При нажатии на кнопку редактирования btnEdit содержимое ячеек строкы заменяется на содержимое формы
   btnEdit.addEventListener('click', () => {
-
 
     CHANGE_ROW.cells[0].innerHTML = inputs[0].value;
     CHANGE_ROW.cells[1].innerHTML = inputs[1].value;
@@ -236,6 +297,7 @@ window.addEventListener('resize', () => {
 //Сначала выполнится функция получения данных, затем все остальные
 getData().then((data) => {
   renderCell(data);
+  pagination(data);
   eventSortTable();
   editData();
   hiddenAllColumn();

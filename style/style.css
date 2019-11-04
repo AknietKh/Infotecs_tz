@@ -5,7 +5,6 @@
 
 .table{  
   width:50%;
-  margin-top: 20px;
   border: 3px solid black;
   border-collapse: collapse;
 }
@@ -113,4 +112,31 @@ th.selected[data-order="1"]::after {
 .hidden-4 .data-row td:nth-child(4),
 .hidden-4 tr th:nth-child(4){
   display: none;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+
+.pagination-number {
+  width: 17px;
+  margin-left: 5px;
+  margin-bottom: 10px;
+  border: 1px solid rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.5);
+  border-radius: 50%;
+  text-align: center;
+  cursor: pointer;
+}
+
+.pagination-number:active {
+  color: rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
+}
+
+.current-pagination {
+  color: rgba(0, 0, 0, 1);
+  border: 1px solid rgba(0, 0, 0, 1);
 }
