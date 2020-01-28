@@ -21,10 +21,10 @@ function getData() {
 //При прорисовке данных в колонке "Описание" обрезает about до длины th "Описание" (aboutLength ) деленное на 4.
 //aboutThLength / 4 примерно равно кол-ву символов, которые влезут 2-мя строками в ячейку about
 function renderCell(jsonData, pagNum = 1) {
-  localStorage.length ? '' : localStorage.setItem('jsonData', JSON.stringify(jsonData));
+  localStorage.getItem('jsonData') ? '' : localStorage.setItem('jsonData', JSON.stringify(jsonData));
   // localStorage.clear()
   
-  const data = localStorage.length ? JSON.parse( localStorage.getItem('jsonData') ) : jsonData,
+  const data = localStorage.getItem('jsonData') ? JSON.parse( localStorage.getItem('jsonData') ) : jsonData,
         tableData = document.querySelector('.main-data'),
         aboutTh = document.querySelector('.about'),
         aboutThLength = aboutTh.clientWidth,
@@ -64,7 +64,7 @@ function splitArray(arr, arraySize = 10) {
 
 //функция отрисовывает пагинацию и вызывает колбэком функицю отрисовки страницы, выбранной в пагинации 
 function renderPagination(jsonData) {
-  const data = localStorage.length ? JSON.parse( localStorage.getItem('jsonData') ) : jsonData,
+  const data = localStorage.getItem('jsonData') ? JSON.parse( localStorage.getItem('jsonData') ) : jsonData,
         table = document.querySelector('.table'),
         pageCount = splitArray(data.JSON).length,
         pagination = document.createElement('div'),
