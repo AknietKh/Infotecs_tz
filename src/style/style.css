@@ -77,23 +77,23 @@ th.selected[data-order="1"]::after {
 
 .btn-hidden{
   position: relative;
-  padding: 5px 15px;
+  padding: 5px 20px;
 }
 
 .hidden-column{
   width: 15px;
   height: 15px;
   position: absolute;
-  bottom: 0;
+  bottom: 15%;
   right: 0;
 }
 
 .hidden-column[data-hidden = 'off']{
-  content: url(/img/view-30.png);
+  content: url('../img/view-30.png');
 }
 
 .hidden-column[data-hidden = 'on']{
-  content: url(/img/hidden-30.png);
+  content: url('../img/hidden-30.png');
 }
 
 .hidden-1 .data-row td:nth-child(1),
